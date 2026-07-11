@@ -1,11 +1,13 @@
 import discord 
 from discord.ext import commands
+import os
+import random
 
 intents = discord.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
-TOKEN = "Tu_Token"
+TOKEN = "Tu token"
 
 @bot.event
 async def on_ready():
@@ -21,7 +23,29 @@ async def calcular(ctx, num1: float,simbolo: str, num2: float):
     await ctx.send(f"El resultado es: {resultado}")
 
 @bot.command()
-async def hola(ctx):
-    await ctx.send("Oh, hola que tal, ¿Como estás?")
+async def imágenes(ctx):
+    li = os.listdir("img")
+    rndm = random.choice(li)
+    with open(f"img/{rndm}","br") as img:
+        leer = img.read()
+        ruta = os.path.join("img", rndm)
+        pinturaamostrar = discord.File(ruta)
+        await ctx.send(file=pinturaamostrar)
 
+@bot.command()
+async def comandos(ctx):
+    await ctx.send("Los comandos son: !imágenes, !hola, !calcular x +/- y(donde x i y son números)")
+
+@bot.command()
+async def craft(ctx, objeto):
+    print(f"has pedido el crafteo de {objeto}")
+    if objeto == "armas":
+        await ctx.send("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgkaJ6cPQsBZk-F7HbXIUnep2TcM4_e5uZbwI25Hle2rDjBiB4FeqO__SnM7NsBtQGOGlp97ZcWMoARYdnGRAAT1Zv6AcIY2h1qsOfR2iMAqubL6mNpO2QV1ChqI_ToSVDVTLtbWG_BDQU/w400-h204/ballestaflechasarco.jpg")
+        await ctx.send("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjqKwpg157n57sSP9wyRqODNxrl4CYmMZu8O-hqWM3hx0qYxVTSy2GzFWHWn51xYwEm8u3Nv1ACaiK0zSBsA46GZQkqwN601yUo-yQ4ja83XrK5ypSKYx7BKkS1iVYKCkv6Af0pwapXvro/w400-h341/espadas.jpg")
+    elif objeto == "armaduras":
+        await ctx.send("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEjI2DPE7K8YEVFMaBspEZSmNGRiVeJMXnrN3E7iSzxonRUWafjhzGk3v7q8iQHsSkHTDzD41_W2Ivzt_BjMLxX-t1kzDl6LW4lhUftuOLh0KwNAZzh-T0L9dP36ykrLH4gkVrB0yjkF4/w400-h303/armaduras.jpg")
+    elif objeto == "herramientas":
+        await ctx.send("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEid0OA_MUNoEeznHjqmRlUOcmr0P3TZXw90axEfVk5_6gOZBKjqYC1ylqZ6Nw8R5VU3uSFz3mzxtq4voC6EVQ52zb6goqm1jFCBWQUQuz0Tqg8tFSqDkL3I1kre_aJ6R0Dh3-gUL6KAhis/w288-h400/herramientas.jpg")
+    else:
+        await ctx.send("Envie o escriba bien el comando: !craft herramientas, !craft armas o !craft armaduras")
 bot.run(TOKEN)
